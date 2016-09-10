@@ -2,12 +2,11 @@ import assert  from 'assert';
 import fs from 'fs';
 import q from 'q';
 
-
 class JSONDerulo {
     constructor() {}
 
     /**
-     *
+     * Sorts a JSON file based on the key being passed in
      *
      * @param jsonFile  - String of filepath for JSON file
      * @param sortField - Field of the JSON key, you want to sort
@@ -55,17 +54,15 @@ class JSONDerulo {
             });
 
         });
-
     }
 
     /**
-     * Will go through your JSON file and find all duplication based on key is passed in
+     * Will go through your JSON file and find all dupes based on the key that is passed in
      *
      * @param jsonFile  - String of filepath for JSON file
      * @param sortField - Field of the JSON key, you want to sort
      * @returns dupedItems - An array containing all the duplicates in your json file
      */
-
     findAllDupes(jsonFile, dupeField) {
         return new q.promise(function(resolve, reject) {
             fs.readFile(jsonFile, 'utf-8', function(err, file) {
@@ -96,7 +93,6 @@ class JSONDerulo {
             });
         });
     }
-
 
     /**
      *  Removes a duplicate value from your JSON file based on key and dupe to remove
