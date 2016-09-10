@@ -1,7 +1,7 @@
 {
   "name": "json-derulo",
-  "description": "",
-  "main": "index.js",
+  "description": "A library to help maintain JSON files with strict structures",
+  "main": "./src/index.js",
   "scripts": {
     "test": "babel -d lib src/ && babel-node spec/run.js",
     "prepublish": "babel -d lib src/",
@@ -18,5 +18,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jarrodthibodeau/json-derulo.git"
+  },
+  "dependencies": {
+    "q": "^1.4.1"
   }
 }
