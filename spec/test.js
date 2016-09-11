@@ -116,7 +116,6 @@ describe('JSONDerulo', () => {
                     filePath = './spec/test-files/dupe-removal.json';
 
                 fs.writeFile(filePath, removalJson,  'utf-8');
-
             });
 
             it('should successfully remove dupe or dupes if one or more are found', (done) => {
@@ -138,7 +137,46 @@ describe('JSONDerulo', () => {
                     .done(done);
             });
         });
+    });
 
+    describe('removeAllDupesForKey method', () => {
+        it('should display the correct message if there are no dupes', (done) => {
+            let expectedError = 'There are no dupes found for key: name';
 
+            JSONDerulo.removeAllDupesForKey('./spec/test-files/dupe-removal-all.json', 'name')
+                .then(() => {
+                    expect(true).toBe(false);
+                })
+                .catch((err) => {
+                    expect(err).toEqual(expectedError);
+                })
+                .done(done);
+        });
+
+        describe('dupes removal', () => {
+            beforeEach(() => {
+                let removalJson = "[{\"name\": \"DANK_MEMES\"},{\"name\": \"IHAVEADOG\"},{\"name\": \"THISISNTADUPE\"},{\"name\": \"DANK_MEMES\"},{\"name\": \"IHAVEADOG\"}]",
+                    filePath = './spec/test-files/dupe-removal-all.json';
+
+                fs.writeFile(filePath, removalJson,  'utf-8');
+            });
+
+            it('should successfully remove all dupes from json', (done) => {
+                let expectedResult = [
+                    {"name": "DANK_MEMES"},
+                    {"name": "IHAVEADOG"},
+                    {"name": "THISISNTADUPE"}
+                ];
+
+                JSONDerulo.removeAllDupesForKey('./spec/test-files/dupe-removal-all.json', 'name')
+                    .then((res) => {
+                        expect(JSON.parse(res)).toEqual(expectedResult);
+                    })
+                    .catch(() => {
+                        expect(true).toBe(false);
+                    })
+                    .done(done);
+            });
+        });
     });
 });

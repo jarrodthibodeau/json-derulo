@@ -4,14 +4,13 @@
 
 ### A library to maintain JSON files that follow a strict structure
 
-
 ## function sortJsonFile(jsonFile, sortField)
 This will sort a JSON file based on what key you want sorted.
 The key to be sorted one MUST be of String or Number value, otherwise.
-An error will be thrown. This will return a stringified JSON object with
+An error will be thrown. This will return a promise with a stringified JSON object with
 your sorted JSON as well as your JSON file being sorted.
 
-## function findAllDupes(jsonFile, dupeField)
+## function findAllDupes(jsonFile, key)
 This will find every duplicate in your JSON file based on the key value.
 That is passed in. This will return an array of the dupes.
 
@@ -19,9 +18,13 @@ That is passed in. This will return an array of the dupes.
 This will remove a dupe from a JSON value based on the key field,
 as well as the value relating to that key that is a dupe. An error
 will be returned if the value cannot be found or if there is no duplicates.
-This will rewrite the file with the dupe removed and return a stringifed JSON object
+This will rewrite the file with the dupe removed and return a promise with a stringifed JSON object
 with the dupe removed.
 
+## function removeAllDupesForKey(jsonFile, key)
+This will find every single possible duplicate for a key and remove them all. This returns
+a promise with a stringified JSON object with all the dupes missing as well as your JSON file
+overwritten with no dupes. Will return an error if no dupes are found.
 
 # Plans for the future
 

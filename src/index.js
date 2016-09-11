@@ -63,7 +63,7 @@ class JSONDerulo {
      * @param sortField - Field of the JSON key, you want to sort
      * @returns dupedItems - An array containing all the duplicates in your json file
      */
-    findAllDupes(jsonFile, dupeField) {
+    findAllDupes(jsonFile, key) {
         return new q.promise(function(resolve, reject) {
             fs.readFile(jsonFile, 'utf-8', function(err, file) {
                 let json,
@@ -79,13 +79,13 @@ class JSONDerulo {
                     let itemCount = 0;
 
                     for (let j = 0; j < json.length; j++) {
-                        if (json[j][dupeField] === json[i][dupeField]) {
+                        if (json[j][key] === json[i][key]) {
                             itemCount++;
                         }
                     }
 
-                    if (itemCount > 1 && dupedItems.indexOf(json[i][dupeField]) === -1)  {
-                        dupedItems.push(json[i][dupeField]);
+                    if (itemCount > 1 && dupedItems.indexOf(json[i][key]) === -1)  {
+                        dupedItems.push(json[i][key]);
                     }
                 }
 
@@ -98,11 +98,11 @@ class JSONDerulo {
      *  Removes a duplicate value from your JSON file based on key and dupe to remove
      *
      * @param jsonFile  - String of filepath for JSON file
-     * @param dupeField
+     * @param key
      * @param dupeValueToRemove
      * @returns json - A stringifed json object with the dupe removed
      */
-     removeDupe(jsonFile, dupeField, dupeValueToRemove) {
+     removeDupe(jsonFile, key, dupeValueToRemove) {
          return q.promise(function(resolve, reject) {
              fs.readFile(jsonFile, 'utf-8', (err, file) => {
                  let json,
@@ -119,7 +119,7 @@ class JSONDerulo {
                  }
 
                  json.map(function(item) {
-                     if (item[dupeField] === dupeValueToRemove) {
+                     if (item[key] === dupeValueToRemove) {
                          dupeItems.push(item);
                      }
                  });
@@ -150,6 +150,57 @@ class JSONDerulo {
 
              });
          });
+     }
+
+     removeAllDupesForKey(jsonFile, key) {
+         return q.promise((resolve, reject) => {
+             fs.readFile(jsonFile, 'utf-8', (err, file) => {
+                 let json;
+
+                 if (err) {
+                     return reject(err);
+                 }
+
+                 try {
+                     json = JSON.parse(file);
+                 } catch(e) {
+                    return  reject(e);
+                 }
+
+                 return this.findAllDupes(jsonFile, key)
+                    .then(function(dupes) {
+                        if (dupes.length === 0 ) {
+                            reject('There are no dupes found for key: ' + key);
+                        } else {
+                            dupes.map(function(dupe) {
+                                let foundDupes = [];
+
+                                json.map((item) => {
+                                    if (item[key] === dupe) {
+                                        foundDupes.push(item);
+                                    }
+                                });
+
+                                for (let i = 1; i < foundDupes.length; i++) {
+                                    json.splice(json.indexOf(foundDupes[i]), 1);
+                                }
+                            });
+
+
+                            json = JSON.stringify(json, null , 2);
+
+                            return fs.writeFile(jsonFile, json, 'utf-8', (err, file) => {
+                                if (err) {
+                                    return reject(err);
+                                }
+
+                                return resolve(json);
+                            });
+                        }
+
+                    });
+             });
+         })
      }
 }
 
