@@ -1,4 +1,7 @@
 # json-derulo
+
+<img src="https://travis-ci.org/jarrodthibodeau/json-derulo.svg?branch=master" />
+
 ### A library to maintain JSON files that follow a strict structure
 
 
