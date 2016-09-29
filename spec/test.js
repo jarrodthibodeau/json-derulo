@@ -31,7 +31,7 @@ describe('JSONDerulo', () => {
                 fs.writeFile(filePath, stringJSON,  'utf-8');
             });
 
-            it('should successfully sort jsonFile based on value', function(done) {
+            it('should successfully sort jsonFile based on value', (done) => {
                 var expectedJson = [
                     { "name": "first" },
                     { "name": "huehuehue" },
@@ -46,6 +46,24 @@ describe('JSONDerulo', () => {
                         expect(true).toBe(false);
                     })
                     .done(done);
+            });
+
+            it('should sort correctly if sort direction is set to ASC', (done) => {
+                var expectedJson = [
+                    { "name": "last" },
+                    { "name": "huehuehue" },
+                    { "name": "first" }
+                ];
+
+                JSONDerulo.sortJsonFile('./spec/test-files/valid_unsorted.json', 'name', 'ASC')
+                    .then(function(res) {
+                        expect(JSON.parse(res)).toEqual(expectedJson);
+                    })
+                    .catch(function(err) {
+                        expect(true).toBe(false);
+                    })
+                    .done(done);
+            
             });
         });
     });

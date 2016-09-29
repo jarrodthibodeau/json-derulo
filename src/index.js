@@ -12,10 +12,12 @@ class JSONDerulo {
      * @param sortField - Field of the JSON key, you want to sort
      * @returns json - A sorted stringifed json object based on what you wanted sorted
      */
-     sortJsonFile(jsonFile, sortField) {
+     sortJsonFile(jsonFile, sortField, sortDirection) {
         return q.promise((resolve, reject) => {
             fs.readFile(jsonFile, 'utf-8', (err, file) => {
                 let json;
+
+                sortDirection = typeof sortDirection === 'undefined' ? 'DESC' : sortDirection
 
                 if (err) {
                     return reject(err);
@@ -36,10 +38,21 @@ class JSONDerulo {
                     json = json.sort((a, b) => {
                         return a[sortField].localeCompare(b[sortField]);
                     });
+
+                    if (sortDirection === 'ASC') {
+                        json = json.reverse();
+                    }
+                 
                 } else {
-                    json = json.sort((a, b) => {
-                         return a[sortField] - b[sortField];
-                    });
+                    if (sortDirection === 'DESC') {
+                        json = json.sort((a, b) => {
+                            return a[sortField] - b[sortField];
+                        });
+                    } else {
+                        json = json.sort((a, b) => {
+                            return b[sortField] - a[sortField]; 
+                        });
+                    }
                 }
 
                 json = JSON.stringify(json, null, 2);

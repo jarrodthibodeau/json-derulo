@@ -4,11 +4,14 @@
 
 ### A library to maintain JSON files that follow a strict structure
 
-## function sortJsonFile(jsonFile, sortField)
+## function sortJsonFile(jsonFile, sortField, sortDirection)
 This will sort a JSON file based on what key you want sorted.
 The key to be sorted one MUST be of String or Number value, otherwise.
 An error will be thrown. This will return a promise with a stringified JSON object with
-your sorted JSON as well as your JSON file being sorted.
+your sorted JSON as well as your JSON file being sorted. 
+
+You can now sort either ascending or descending. pass in 'ASC' for ascending
+or 'DESC' for descending. If nothing is passed in, it will default to descending.
 
 ## function findAllDupes(jsonFile, key)
 This will find every duplicate in your JSON file based on the key value.
